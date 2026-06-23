@@ -24,6 +24,25 @@
     * clocks - array of {timezone, utcoffset, label}
     * usertimezone - IANA timezone name of the viewing user, or empty string
     * userutcoffset - fixed UTC offset of the viewing user, or empty string
+
+    Example context (json):
+    {
+        "uniqid": "block_worldclock_1",
+        "clocks": [
+            {
+                "timezone": "Pacific/Kiritimati",
+                "utcoffset": "",
+                "label": "Pacific/Kiritimati"
+            },
+            {
+                "timezone": "",
+                "utcoffset": "5.5",
+                "label": "UTC+5.5"
+            }
+        ],
+        "usertimezone": "Europe/London",
+        "userutcoffset": ""
+    }
 }}
 <div id="{{uniqid}}" class="block_worldclock_wrapper"
     data-user-timezone="{{usertimezone}}" data-user-utcoffset="{{userutcoffset}}">
