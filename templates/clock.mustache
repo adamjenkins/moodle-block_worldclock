@@ -1,0 +1,39 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template block_worldclock/clock
+
+    World clock block content.
+
+    Context variables required for this template:
+    * uniqid - unique id used to scope JS to this block instance
+    * clocks - array of {timezone, utcoffset, label}
+}}
+<div id="{{uniqid}}" class="block_worldclock_wrapper">
+    <ul class="list-unstyled m-0 p-0">
+        {{#clocks}}
+        <li class="worldclock-entry d-flex justify-content-between align-items-baseline mb-2"
+            data-timezone="{{timezone}}" data-utcoffset="{{utcoffset}}">
+            <span class="worldclock-label">{{label}}</span>
+            <span class="worldclock-time-wrap text-end">
+                <span class="worldclock-time" data-region="time">--:--:--</span>
+                <span class="worldclock-date" data-region="date"></span>
+            </span>
+        </li>
+        {{/clocks}}
+    </ul>
+</div>

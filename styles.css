@@ -1,0 +1,23 @@
+.block_worldclock .worldclock-entry {
+    border-bottom: 1px solid var(--border-color, #dee2e6);
+    padding-bottom: 0.25rem;
+}
+
+.block_worldclock .worldclock-entry:last-child {
+    border-bottom: 0;
+}
+
+.block_worldclock .worldclock-label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.block_worldclock .worldclock-time {
+    font-variant-numeric: tabular-nums;
+}
+
+.block_worldclock .worldclock-date {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--secondary, #6c757d);
+}
