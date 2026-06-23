@@ -18,14 +18,14 @@
  * Version details.
  *
  * @package    block_worldclock
- * @copyright  2026 Adam Jenkins
+ * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2026062301;
+$plugin->version   = 2026062308;
 $plugin->requires  = 2023100400; // Moodle 4.3+.
 $plugin->component = 'block_worldclock';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = '1.0';
+$plugin->release   = '1.4';

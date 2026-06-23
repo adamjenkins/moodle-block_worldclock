@@ -22,13 +22,20 @@
     Context variables required for this template:
     * uniqid - unique id used to scope JS to this block instance
     * clocks - array of {timezone, utcoffset, label}
+    * usertimezone - IANA timezone name of the viewing user, or empty string
+    * userutcoffset - fixed UTC offset of the viewing user, or empty string
 }}
-<div id="{{uniqid}}" class="block_worldclock_wrapper">
+<div id="{{uniqid}}" class="block_worldclock_wrapper"
+    data-user-timezone="{{usertimezone}}" data-user-utcoffset="{{userutcoffset}}">
     <ul class="list-unstyled m-0 p-0">
         {{#clocks}}
-        <li class="worldclock-entry d-flex justify-content-between align-items-baseline mb-2"
+        <li class="worldclock-entry d-flex justify-content-between align-items-center mb-2"
             data-timezone="{{timezone}}" data-utcoffset="{{utcoffset}}">
-            <span class="worldclock-label">{{label}}</span>
+            <span class="worldclock-label-wrap">
+                <span class="worldclock-label">{{label}}</span>
+                <span class="worldclock-icon" data-region="icon" aria-hidden="true"></span>
+                <span class="accesshide" data-region="iconlabel"></span>
+            </span>
             <span class="worldclock-time-wrap text-end">
                 <span class="worldclock-time" data-region="time">--:--:--</span>
                 <span class="worldclock-date" data-region="date"></span>

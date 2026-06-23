@@ -15,36 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * World clock block capabilities.
+ * Upgrade steps for block_worldclock.
  *
  * @package    block_worldclock
  * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+/**
+ * Run upgrade steps for block_worldclock.
+ *
+ * @param int $oldversion
+ * @return bool
+ */
+function xmldb_block_worldclock_upgrade($oldversion) {
+    if ($oldversion < 2026062306) {
+        // The 'timezoneorder' setting was replaced by 'referencetimezone'.
+        unset_config('timezoneorder', 'block_worldclock');
+        upgrade_block_savepoint(true, 2026062306, 'worldclock');
+    }
 
-$capabilities = [
-    'block/worldclock:addinstance' => [
-        'riskbitmask' => RISK_SPAM,
-
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_BLOCK,
-        'archetypes' => [
-            'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW,
-        ],
-
-        'clonepermissionsfrom' => 'moodle/site:manageblocks',
-    ],
-
-    'block/worldclock:myaddinstance' => [
-        'captype' => 'write',
-        'contextlevel' => CONTEXT_SYSTEM,
-        'archetypes' => [
-            'user' => CAP_ALLOW,
-        ],
-
-        'clonepermissionsfrom' => 'moodle/my:manageblocks',
-    ],
-];
+    return true;
+}

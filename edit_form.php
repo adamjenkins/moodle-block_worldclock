@@ -18,7 +18,7 @@
  * Form for editing world clock block instances.
  *
  * @package    block_worldclock
- * @copyright  2026 Adam Jenkins
+ * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -71,6 +71,23 @@ class block_worldclock_edit_form extends block_edit_form {
 
         $mform->addElement('advcheckbox', 'config_showdate', get_string('configshowdate', 'block_worldclock'));
         $mform->setDefault('config_showdate', 0);
+
+        $mform->addElement(
+            'advcheckbox',
+            'config_showdateonlydiff',
+            get_string('configshowdateonlydiff', 'block_worldclock')
+        );
+        $mform->addHelpButton('config_showdateonlydiff', 'configshowdateonlydiff', 'block_worldclock');
+        $mform->setDefault('config_showdateonlydiff', 0);
+        $mform->hideIf('config_showdateonlydiff', 'config_showdate', 'notchecked');
+
+        $mform->addElement('advcheckbox', 'config_showicon', get_string('configshowicon', 'block_worldclock'));
+        $mform->addHelpButton('config_showicon', 'configshowicon', 'block_worldclock');
+        $mform->setDefault('config_showicon', 0);
+
+        $mform->addElement('advcheckbox', 'config_wakinghoursbg', get_string('configwakinghoursbg', 'block_worldclock'));
+        $mform->addHelpButton('config_wakinghoursbg', 'configwakinghoursbg', 'block_worldclock');
+        $mform->setDefault('config_wakinghoursbg', 0);
     }
 
     /**

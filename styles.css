@@ -1,10 +1,35 @@
 .block_worldclock .worldclock-entry {
     border-bottom: 1px solid var(--border-color, #dee2e6);
     padding-bottom: 0.25rem;
+    transition: background-color 0.3s ease;
 }
 
 .block_worldclock .worldclock-entry:last-child {
     border-bottom: 0;
+}
+
+.block_worldclock .worldclock-entry.worldclock-bg-night,
+.block_worldclock .worldclock-entry.worldclock-bg-twilight,
+.block_worldclock .worldclock-entry.worldclock-bg-day {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.block_worldclock .worldclock-entry.worldclock-bg-night {
+    background-color: #f3c6dd;
+}
+
+.block_worldclock .worldclock-entry.worldclock-bg-twilight {
+    background-color: #fdeeb0;
+}
+
+.block_worldclock .worldclock-entry.worldclock-bg-day {
+    background-color: #c3e6c3;
+}
+
+.block_worldclock .worldclock-label-wrap {
+    display: flex;
+    flex-direction: column;
 }
 
 .block_worldclock .worldclock-label {
@@ -20,4 +45,9 @@
     display: block;
     font-size: 0.75rem;
     color: var(--secondary, #6c757d);
+}
+
+.block_worldclock .worldclock-icon {
+    font-size: 0.8rem;
+    line-height: 1.2;
 }

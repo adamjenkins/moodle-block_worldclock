@@ -18,7 +18,7 @@
  * World clock block.
  *
  * @package    block_worldclock
- * @copyright  2026 Adam Jenkins
+ * @copyright  2026 Adam Jenkins <adam@wisecat.net>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -37,12 +37,12 @@ class block_worldclock extends block_base {
     }
 
     /**
-     * This block does not have site-wide settings.
+     * This block has site-wide settings for the waking-hours background boundaries.
      *
      * @return bool
      */
     public function has_config() {
-        return false;
+        return true;
     }
 
     /**
@@ -80,7 +80,7 @@ class block_worldclock extends block_base {
      * @return stdClass
      */
     public function get_content() {
-        global $OUTPUT;
+        global $OUTPUT, $USER;
 
         if ($this->content !== null) {
             return $this->content;
@@ -97,6 +97,8 @@ class block_worldclock extends block_base {
             $clocks = $this->get_clocks_for_selected_timezones();
         }
 
+        $clocks = $this->sort_clocks_by_reference_timezone($clocks);
+
         if (empty($clocks)) {
             $this->content->text = $OUTPUT->notification(
                 get_string('notimezonesconfigured', 'block_worldclock'),
@@ -109,19 +111,41 @@ class block_worldclock extends block_base {
         $format24 = !empty($this->config->format24);
         $showseconds = $this->config->showseconds ?? true;
         $showdate = !empty($this->config->showdate);
+        $showdateonlydiff = !empty($this->config->showdateonlydiff);
+        $showicon = !empty($this->config->showicon);
+        $wakinghoursbg = !empty($this->config->wakinghoursbg);
 
         $uniqid = 'block_worldclock_' . $this->instance->id;
+
+        $userresolved = get_user_timezone($USER->timezone ?? '');
+        $usertimezone = is_numeric($userresolved) ? '' : $userresolved;
+        $userutcoffset = is_numeric($userresolved) ? (string) $userresolved : '';
 
         $this->content->text = $OUTPUT->render_from_template('block_worldclock/clock', [
             'uniqid' => $uniqid,
             'clocks' => $clocks,
+            'usertimezone' => $usertimezone,
+            'userutcoffset' => $userutcoffset,
         ]);
 
         $this->page->requires->js_call_amd('block_worldclock/clock', 'init', [
             $uniqid,
-            (bool) $format24,
-            (bool) $showseconds,
-            (bool) $showdate,
+            [
+                'format24' => (bool) $format24,
+                'showSeconds' => (bool) $showseconds,
+                'showDate' => (bool) $showdate,
+                'showDateOnlyDiff' => (bool) $showdateonlydiff,
+                'showIcon' => (bool) $showicon,
+                'daytimeLabel' => get_string('daytime', 'block_worldclock'),
+                'nighttimeLabel' => get_string('nighttime', 'block_worldclock'),
+                'iconDayStart' => $this->get_hour_setting('icondaystart', 6),
+                'iconNightStart' => $this->get_hour_setting('iconnightstart', 18),
+                'wakingHoursBg' => (bool) $wakinghoursbg,
+                'nightStart' => $this->get_hour_setting('nightstart', 23),
+                'morningStart' => $this->get_hour_setting('morningstart', 5),
+                'dayStart' => $this->get_hour_setting('daystart', 8),
+                'eveningStart' => $this->get_hour_setting('eveningstart', 20),
+            ],
         ]);
 
         return $this->content;
@@ -210,13 +234,76 @@ class block_worldclock extends block_base {
             }
         }
 
-        $clocks = array_values($seen);
+        return array_slice(array_values($seen), 0, self::MAX_AUTO_ZONES);
+    }
 
-        usort($clocks, function ($a, $b) {
-            return strcmp($a['label'], $b['label']);
+    /**
+     * Sort clocks by local date and time, starting from the 'referencetimezone' admin
+     * setting (Pacific/Kiritimati by default) and working backwards around the clock.
+     *
+     * Clocks are ordered by their real UTC offset, not by hour-of-day alone, so that
+     * timezones whose offsets differ by a full day or more (e.g. UTC+14 and UTC-10,
+     * which read the same local hour but are a calendar day apart) are placed
+     * correctly relative to each other instead of colliding.
+     *
+     * @param array $clocks
+     * @return array
+     */
+    protected function sort_clocks_by_reference_timezone(array $clocks): array {
+        $referenceclock = ['timezone' => $this->get_reference_timezone_setting(), 'utcoffset' => ''];
+        $referenceoffset = $this->get_clock_utc_offset_hours($referenceclock);
+
+        $decorated = array_map(function ($clock) {
+            return ['offset' => $this->get_clock_utc_offset_hours($clock), 'clock' => $clock];
+        }, $clocks);
+
+        usort($decorated, function ($a, $b) {
+            return $b['offset'] <=> $a['offset'];
         });
 
-        return array_slice($clocks, 0, self::MAX_AUTO_ZONES);
+        // Clocks at or behind the reference keep their place; clocks ahead of the
+        // reference are a calendar day further on, so they wrap around to the end.
+        $before = [];
+        $after = [];
+        foreach ($decorated as $entry) {
+            if ($entry['offset'] <= $referenceoffset) {
+                $before[] = $entry['clock'];
+            } else {
+                $after[] = $entry['clock'];
+            }
+        }
+
+        return array_merge($before, $after);
+    }
+
+    /**
+     * Get the current UTC offset, in hours, for a clock entry.
+     *
+     * @param array $clock {timezone, utcoffset, label}
+     * @return float
+     */
+    protected function get_clock_utc_offset_hours(array $clock): float {
+        if ($clock['utcoffset'] !== '') {
+            return (float) $clock['utcoffset'];
+        }
+
+        try {
+            $timezone = new DateTimeZone($clock['timezone']);
+            $datetime = new DateTime('now', $timezone);
+            return $timezone->getOffset($datetime) / 3600;
+        } catch (Exception $e) {
+            return 0.0;
+        }
+    }
+
+    /**
+     * Read the 'referencetimezone' admin setting.
+     *
+     * @return string
+     */
+    protected function get_reference_timezone_setting(): string {
+        $value = get_config('block_worldclock', 'referencetimezone');
+        return empty($value) ? 'Pacific/Kiritimati' : (string) $value;
     }
 
     /**
@@ -231,5 +318,17 @@ class block_worldclock extends block_base {
         }
         $sign = $offset > 0 ? '+' : '-';
         return 'UTC' . $sign . number_format(abs($offset), 1);
+    }
+
+    /**
+     * Read an hour-of-day admin setting, falling back to a default if unset.
+     *
+     * @param string $name
+     * @param int $default
+     * @return int
+     */
+    protected function get_hour_setting(string $name, int $default): int {
+        $value = get_config('block_worldclock', $name);
+        return $value === false ? $default : (int) $value;
     }
 }
