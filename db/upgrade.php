@@ -35,5 +35,11 @@ function xmldb_block_worldclock_upgrade($oldversion) {
         upgrade_block_savepoint(true, 2026062306, 'worldclock');
     }
 
+    if ($oldversion < 2026062400) {
+        // The 'referencetimezone' setting was replaced by a per-instance ascending/descending sort order.
+        unset_config('referencetimezone', 'block_worldclock');
+        upgrade_block_savepoint(true, 2026062400, 'worldclock');
+    }
+
     return true;
 }

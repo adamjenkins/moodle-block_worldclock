@@ -20,9 +20,12 @@ be added to course pages, activities, and the Moodle dashboard.
   boundary hours configurable site-wide), and a waking-hours background
   colour (pink overnight, yellow at the morning/evening transition, green
   during the day — boundary hours also configurable site-wide).
-- Timezones are ordered by local time, starting from a site-wide "First
-  timezone" setting (Pacific/Kiritimati by default) and working backwards
-  around the clock.
+- Timezones are sorted chronologically by their current local date and
+  time, as if every clock were read at the same instant — ascending or
+  descending, per block instance. Clocks that currently share the same UTC
+  offset are ordered alphabetically by name.
+- Optionally show each timezone's current UTC offset (e.g. "UTC+9") next
+  to its name.
 - Multiple instances of the block can be added to the same page.
 
 ## Installation
@@ -44,9 +47,11 @@ Add the block to a course page or the dashboard, then use the block's
   is currently displayed on.
 - **Timezones** — only used in manual mode; the fixed list of timezones to
   show.
-- **Use 24-hour time format**, **Show seconds**, **Show date** (with an
-  **Only when different** sub-setting), **Show day/night icon**,
-  **Colour background by time of day** — display options.
+- **Sort order** — *Ascending* or *Descending* chronological order.
+- **Show UTC offset**, **Use 24-hour time format**, **Show seconds**,
+  **Show date** (with an **Only when different** sub-setting), **Show
+  day/night icon**, **Colour background by time of day** — display
+  options.
 
 In automatic mode, the viewing user must have the
 `moodle/course:viewparticipants` capability in the source course or the
@@ -59,9 +64,6 @@ Under *Site administration > Plugins > Blocks > World clock*:
 - The waking-hours background boundary hours (night/morning/day/evening
   start) apply to every block instance that has **Colour background by
   time of day** enabled.
-- **First timezone** controls which timezone appears first in every block
-  instance (defaults to Pacific/Kiritimati); the rest follow in order of
-  local time, working backwards around the clock from there.
 - **Icon day start** / **Icon night start** control the boundary hours for
   the sun/moon day-night icon (defaults to 6am/6pm), for every block
   instance that has **Show day/night icon** enabled.

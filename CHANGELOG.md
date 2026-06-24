@@ -2,6 +2,16 @@
 
 All notable changes to the World clock block are documented in this file.
 
+## [1.5] - 2026-06-24
+
+- Replaced the site-wide "First timezone" setting with a per-instance
+  "Sort order" option (ascending/descending): clocks are now sorted
+  chronologically by their current local date and time, as if every clock
+  were read at the same instant, with alphabetical tie-breaking for
+  clocks that currently share the same UTC offset.
+- New per-instance "Show UTC offset" option, displaying each timezone's
+  current offset (e.g. "UTC+9") next to its name.
+
 ## [1.4] - 2026-06-23
 
 - The day/night icon's boundary hours are now configurable site-wide

@@ -97,7 +97,14 @@ class block_worldclock extends block_base {
             $clocks = $this->get_clocks_for_selected_timezones();
         }
 
-        $clocks = $this->sort_clocks_by_reference_timezone($clocks);
+        $clocks = $this->sort_clocks_chronologically($clocks, $this->config->sortorder ?? 'asc');
+
+        if (!empty($this->config->showutcoffset)) {
+            foreach ($clocks as &$clock) {
+                $clock['offsetlabel'] = $this->get_offset_label($this->get_clock_utc_offset_hours($clock));
+            }
+            unset($clock);
+        }
 
         if (empty($clocks)) {
             $this->content->text = $OUTPUT->notification(
@@ -238,42 +245,27 @@ class block_worldclock extends block_base {
     }
 
     /**
-     * Sort clocks by local date and time, starting from the 'referencetimezone' admin
-     * setting (Pacific/Kiritimati by default) and working backwards around the clock.
-     *
-     * Clocks are ordered by their real UTC offset, not by hour-of-day alone, so that
-     * timezones whose offsets differ by a full day or more (e.g. UTC+14 and UTC-10,
-     * which read the same local hour but are a calendar day apart) are placed
-     * correctly relative to each other instead of colliding.
+     * Sort clocks chronologically by their real UTC offset, which is equivalent to sorting
+     * by each clock's current local date and time as if every clock were read at once in
+     * the same timezone. Clocks sharing the same offset are tie-broken alphabetically by
+     * label (always A-Z, regardless of $direction).
      *
      * @param array $clocks
+     * @param string $direction 'asc' or 'desc'
      * @return array
      */
-    protected function sort_clocks_by_reference_timezone(array $clocks): array {
-        $referenceclock = ['timezone' => $this->get_reference_timezone_setting(), 'utcoffset' => ''];
-        $referenceoffset = $this->get_clock_utc_offset_hours($referenceclock);
+    protected function sort_clocks_chronologically(array $clocks, string $direction): array {
+        $sign = $direction === 'desc' ? -1 : 1;
 
-        $decorated = array_map(function ($clock) {
-            return ['offset' => $this->get_clock_utc_offset_hours($clock), 'clock' => $clock];
-        }, $clocks);
-
-        usort($decorated, function ($a, $b) {
-            return $b['offset'] <=> $a['offset'];
+        usort($clocks, function ($a, $b) use ($sign) {
+            $comparison = $this->get_clock_utc_offset_hours($a) <=> $this->get_clock_utc_offset_hours($b);
+            if ($comparison === 0) {
+                return strcasecmp($a['label'], $b['label']);
+            }
+            return $comparison * $sign;
         });
 
-        // Clocks at or behind the reference keep their place; clocks ahead of the
-        // reference are a calendar day further on, so they wrap around to the end.
-        $before = [];
-        $after = [];
-        foreach ($decorated as $entry) {
-            if ($entry['offset'] <= $referenceoffset) {
-                $before[] = $entry['clock'];
-            } else {
-                $after[] = $entry['clock'];
-            }
-        }
-
-        return array_merge($before, $after);
+        return $clocks;
     }
 
     /**
@@ -297,17 +289,7 @@ class block_worldclock extends block_base {
     }
 
     /**
-     * Read the 'referencetimezone' admin setting.
-     *
-     * @return string
-     */
-    protected function get_reference_timezone_setting(): string {
-        $value = get_config('block_worldclock', 'referencetimezone');
-        return empty($value) ? 'Pacific/Kiritimati' : (string) $value;
-    }
-
-    /**
-     * Build a human readable label for a fixed UTC offset.
+     * Build a human readable label for a fixed UTC offset, e.g. 'UTC+9' or 'UTC-3.5'.
      *
      * @param float $offset
      * @return string
@@ -317,7 +299,9 @@ class block_worldclock extends block_base {
             return 'UTC';
         }
         $sign = $offset > 0 ? '+' : '-';
-        return 'UTC' . $sign . number_format(abs($offset), 1);
+        $abs = abs($offset);
+        $formatted = ((int) $abs == $abs) ? (string) (int) $abs : number_format($abs, 1);
+        return 'UTC' . $sign . $formatted;
     }
 
     /**

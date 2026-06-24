@@ -21,9 +21,12 @@
 
     Context variables required for this template:
     * uniqid - unique id used to scope JS to this block instance
-    * clocks - array of {timezone, utcoffset, label}
+    * clocks - array of {timezone, utcoffset, label, offsetlabel}
     * usertimezone - IANA timezone name of the viewing user, or empty string
     * userutcoffset - fixed UTC offset of the viewing user, or empty string
+
+    offsetlabel is only set (and only rendered) when the block instance has
+    "Show UTC offset" enabled, e.g. "UTC+9".
 
     Example context (json):
     {
@@ -32,12 +35,14 @@
             {
                 "timezone": "Pacific/Kiritimati",
                 "utcoffset": "",
-                "label": "Pacific/Kiritimati"
+                "label": "Pacific/Kiritimati",
+                "offsetlabel": "UTC+14"
             },
             {
                 "timezone": "",
                 "utcoffset": "5.5",
-                "label": "UTC+5.5"
+                "label": "UTC+5.5",
+                "offsetlabel": "UTC+5.5"
             }
         ],
         "usertimezone": "Europe/London",
@@ -52,6 +57,9 @@
             data-timezone="{{timezone}}" data-utcoffset="{{utcoffset}}">
             <span class="worldclock-label-wrap">
                 <span class="worldclock-label">{{label}}</span>
+                {{#offsetlabel}}
+                <span class="worldclock-offset">({{offsetlabel}})</span>
+                {{/offsetlabel}}
                 <span class="worldclock-icon" data-region="icon" aria-hidden="true"></span>
                 <span class="accesshide" data-region="iconlabel"></span>
             </span>

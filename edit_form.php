@@ -63,6 +63,17 @@ class block_worldclock_edit_form extends block_edit_form {
         $mform->addHelpButton('config_timezones', 'configtimezones', 'block_worldclock');
         $mform->hideIf('config_timezones', 'config_mode', 'eq', 'auto');
 
+        $sortoptions = [
+            'asc' => get_string('configsortorderasc', 'block_worldclock'),
+            'desc' => get_string('configsortorderdesc', 'block_worldclock'),
+        ];
+        $mform->addElement('select', 'config_sortorder', get_string('configsortorder', 'block_worldclock'), $sortoptions);
+        $mform->addHelpButton('config_sortorder', 'configsortorder', 'block_worldclock');
+        $mform->setDefault('config_sortorder', 'asc');
+
+        $mform->addElement('advcheckbox', 'config_showutcoffset', get_string('configshowutcoffset', 'block_worldclock'));
+        $mform->setDefault('config_showutcoffset', 0);
+
         $mform->addElement('advcheckbox', 'config_format24', get_string('configformat24', 'block_worldclock'));
         $mform->setDefault('config_format24', 1);
 

@@ -63,14 +63,6 @@ if ($ADMIN->fulltree) {
     ));
 
     $settings->add(new admin_setting_configselect(
-        'block_worldclock/referencetimezone',
-        get_string('settingreferencetimezone', 'block_worldclock'),
-        get_string('settingreferencetimezone_desc', 'block_worldclock'),
-        'Pacific/Kiritimati',
-        core_date::get_list_of_timezones(null, false)
-    ));
-
-    $settings->add(new admin_setting_configselect(
         'block_worldclock/icondaystart',
         get_string('settingicondaystart', 'block_worldclock'),
         get_string('settingicondaystart_desc', 'block_worldclock'),
