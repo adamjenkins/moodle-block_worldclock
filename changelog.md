@@ -2,6 +2,15 @@
 
 All notable changes to the World clock block are documented in this file.
 
+## [Unreleased]
+
+- CI matrix corrected: Moodle 5.0 is tested on PHP 8.2-8.3 only, and the
+  database services are pinned to versions all three Moodle branches accept
+  (PostgreSQL 16, MariaDB 10.11).
+- Added the moodle-release.yml workflow to publish tagged releases to the
+  Moodle Plugins directory, and CHANGES.md release notes.
+- Declared supported Moodle versions (5.0-5.2) in version.php.
+
 ## [1.5] - 2026-06-24
 
 - Replaced the site-wide "First timezone" setting with a per-instance

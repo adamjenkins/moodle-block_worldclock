@@ -26,6 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 $plugin->version   = 2026062400;
 $plugin->requires  = 2023100400; // Moodle 4.3+.
+$plugin->supported = [500, 502];
 $plugin->component = 'block_worldclock';
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = '1.5';
