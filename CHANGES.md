@@ -1,5 +1,14 @@
 # Changes
 
+## v1.6.0
+
+- CI matrix corrected: Moodle 5.0 is tested on PHP 8.2-8.3 only, with the
+  database services pinned to versions all three Moodle branches accept
+  (PostgreSQL 16, MariaDB 10.11).
+- Added the moodle-release.yml workflow to publish tagged releases to the
+  Moodle Plugins directory.
+- Declared supported Moodle versions (5.0-5.2) in version.php.
+
 ## v1.5
 
 - Sorting rework: the site-wide "First timezone" setting is replaced by a

@@ -4,6 +4,8 @@ All notable changes to the World clock block are documented in this file.
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-07-13
+
 - CI matrix corrected: Moodle 5.0 is tested on PHP 8.2-8.3 only, and the
   database services are pinned to versions all three Moodle branches accept
   (PostgreSQL 16, MariaDB 10.11).
