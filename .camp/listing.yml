@@ -1,0 +1,22 @@
+# camp listing manifest — descriptive content for your plugin's page.
+# Edit freely and commit; camp ingests this file at each tagged release.
+# Schema: https://camp-registry.org/schema/listing.schema.json
+name: block_worldclock
+summary: 'A Moodle block that displays the current time in multiple timezones, on course pages, activities, and the dashboard.'
+description: |
+  Shows live-updating clocks for any hand-picked set of IANA timezones — or,
+  in automatic mode, for every distinct timezone used by the users enrolled in
+  a course. Clocks handle daylight saving correctly, and per-instance options
+  cover 12/24-hour format, seconds, and showing the date only when it differs
+  from the viewer's own.
+labels:
+  # Required disclosure labels — pick all that apply (RFC §4.7):
+  #   fully-free | freemium | paid-service | external-account
+  #   donation-supported | commercial-support-available
+  - fully-free
+# screenshots:
+#   - path: .camp/screenshots/overview.png
+#     caption: Main view
+# links:
+#   docs: https://…
+#   issues: https://…
