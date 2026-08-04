@@ -4,6 +4,14 @@ All notable changes to the World clock block are documented in this file.
 
 ## [Unreleased]
 
+## [1.6.1] - 2026-08-04
+
+### Added
+
+- The full GPL-3.0 licence text is now included as `LICENSE` in the repository
+  root. The plugin's licence is unchanged (GPL-3.0-or-later, as declared in
+  `composer.json`); the file was simply missing.
+
 ## [1.6.0] - 2026-07-13
 
 - CI matrix corrected: Moodle 5.0 is tested on PHP 8.2-8.3 only, and the
