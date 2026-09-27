@@ -1,5 +1,5 @@
 .block_worldclock .worldclock-entry {
-    border-bottom: 1px solid var(--border-color, #dee2e6);
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
     padding-bottom: 0.25rem;
     transition: background-color 0.3s ease;
 }
@@ -13,6 +13,17 @@
 .block_worldclock .worldclock-entry.worldclock-bg-day {
     padding: 0.25rem 0.5rem;
     border-radius: 0.25rem;
+    /* The waking-hours tints are fixed light colours, so their text must stay dark in every colour mode. */
+    color: #1d2125;
+}
+
+.block_worldclock .worldclock-entry.worldclock-bg-night .worldclock-date,
+.block_worldclock .worldclock-entry.worldclock-bg-night .worldclock-offset,
+.block_worldclock .worldclock-entry.worldclock-bg-twilight .worldclock-date,
+.block_worldclock .worldclock-entry.worldclock-bg-twilight .worldclock-offset,
+.block_worldclock .worldclock-entry.worldclock-bg-day .worldclock-date,
+.block_worldclock .worldclock-entry.worldclock-bg-day .worldclock-offset {
+    color: rgba(29, 33, 37, 0.75);
 }
 
 .block_worldclock .worldclock-entry.worldclock-bg-night {
@@ -44,13 +55,13 @@
 .block_worldclock .worldclock-date {
     display: block;
     font-size: 0.75rem;
-    color: var(--secondary, #6c757d);
+    color: var(--bs-secondary-color, #6c757d);
 }
 
 .block_worldclock .worldclock-offset {
     font-size: 0.8rem;
     font-weight: 400;
-    color: var(--secondary, #6c757d);
+    color: var(--bs-secondary-color, #6c757d);
 }
 
 .block_worldclock .worldclock-icon {

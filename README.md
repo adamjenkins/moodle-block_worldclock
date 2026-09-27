@@ -75,7 +75,7 @@ A GitHub Actions workflow (`.github/workflows/ci.yml`) runs the
 against Moodle 5.0, 5.1, and 5.2, using every PHP version each branch
 actually supports (5.0/5.1: PHP 8.2-8.4; 5.2: PHP 8.3-8.4, since Moodle 5.2
 raises its minimum PHP requirement to 8.3), crossed with both Postgres and
-MariaDB.
+MariaDB; moodle.git main (5.3) as a non-blocking job.
 
 ## Privacy
 
