@@ -2,7 +2,7 @@
 
 All notable changes to the World clock block are documented in this file.
 
-## [Unreleased]
+## [1.6.2] - 2026-10-03
 
 - Declare Moodle 5.3 support.
 - Styles now follow Boost's colour mode (experimental dark mode in Moodle
