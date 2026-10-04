@@ -2,7 +2,7 @@
 
 All notable changes to the World clock block are documented in this file.
 
-## [Unreleased]
+## [1.6.3] - 2026-10-04
 
 ### Fixed
 
@@ -15,11 +15,17 @@ All notable changes to the World clock block are documented in this file.
 
 - `$plugin->requires` raised from Moodle 4.3 to 5.0 (2025041400), matching
   the declared supported range (5.0-5.3).
+- `composer.json` uses a caret constraint for `moodle/moodle` (`^5.0`, was
+  `>=5.0 <5.4`), so new Moodle 5.x releases are not excluded.
+- CI tests `MOODLE_503_STABLE` (blocking) instead of moodle.git `main`, now
+  that Moodle 5.3 is released.
 
 ### Added
 
 - PHPUnit tests (`tests/block_worldclock_test.php`) covering automatic mode,
   chronological sorting, UTC offset labels and the rendered block output.
+- Camp release workflow (`.github/workflows/camp-release.yml`): pushing a `v*`
+  tag publishes the release to the camp registry.
 
 ## [1.6.2] - 2026-10-03
 

@@ -77,7 +77,8 @@ A GitHub Actions workflow (`.github/workflows/ci.yml`) runs the
 against Moodle 5.0, 5.1, and 5.2, using every PHP version each branch
 actually supports (5.0/5.1: PHP 8.2-8.4; 5.2: PHP 8.3-8.4, since Moodle 5.2
 raises its minimum PHP requirement to 8.3), crossed with both Postgres and
-MariaDB; moodle.git main (5.3) as a non-blocking job. The PHPUnit tests in
+MariaDB; plus Moodle 5.3 (MOODLE_503_STABLE, PHP 8.3-8.4, PostgreSQL 17 and
+MariaDB 11.4). The PHPUnit tests in
 `tests/` cover automatic mode (capability gate, server-default and forced
 timezones, the zone cap), chronological sorting, UTC offset labels and the
 rendered, escaped block output.
