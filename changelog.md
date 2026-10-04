@@ -2,6 +2,25 @@
 
 All notable changes to the World clock block are documented in this file.
 
+## [Unreleased]
+
+### Fixed
+
+- Automatic mode: users who kept the default "Server timezone" are now shown
+  under the site's timezone. Before, they were shown under the viewer's own
+  timezone, so each viewer saw a different and wrong set of clocks. A forced
+  site timezone (`forcetimezone`) now also applies to every user.
+
+### Changed
+
+- `$plugin->requires` raised from Moodle 4.3 to 5.0 (2025041400), matching
+  the declared supported range (5.0-5.3).
+
+### Added
+
+- PHPUnit tests (`tests/block_worldclock_test.php`) covering automatic mode,
+  chronological sorting, UTC offset labels and the rendered block output.
+
 ## [1.6.2] - 2026-10-03
 
 - Declare Moodle 5.3 support.

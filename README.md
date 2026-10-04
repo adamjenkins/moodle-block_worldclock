@@ -30,7 +30,7 @@ be added to course pages, activities, and the Moodle dashboard.
 
 ## Installation
 
-Copy (or check out) this plugin into `blocks/worldclock` in your Moodle
+Requires Moodle 5.0 or later. Copy (or check out) this plugin into `blocks/worldclock` in your Moodle
 installation, then visit *Site administration > Notifications* to complete
 the install.
 
@@ -55,7 +55,9 @@ Add the block to a course page or the dashboard, then use the block's
 
 In automatic mode, the viewing user must have the
 `moodle/course:viewparticipants` capability in the source course or the
-block will show nothing.
+block will show nothing. Users who kept the default ("Server timezone")
+are shown under the site's default timezone, and a forced site timezone
+(`forcetimezone`) applies to every user, as elsewhere in Moodle.
 
 ### Site administration settings
 
@@ -75,7 +77,10 @@ A GitHub Actions workflow (`.github/workflows/ci.yml`) runs the
 against Moodle 5.0, 5.1, and 5.2, using every PHP version each branch
 actually supports (5.0/5.1: PHP 8.2-8.4; 5.2: PHP 8.3-8.4, since Moodle 5.2
 raises its minimum PHP requirement to 8.3), crossed with both Postgres and
-MariaDB; moodle.git main (5.3) as a non-blocking job.
+MariaDB; moodle.git main (5.3) as a non-blocking job. The PHPUnit tests in
+`tests/` cover automatic mode (capability gate, server-default and forced
+timezones, the zone cap), chronological sorting, UTC offset labels and the
+rendered, escaped block output.
 
 ## Privacy
 

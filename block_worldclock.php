@@ -218,7 +218,10 @@ class block_worldclock extends block_base {
 
         $seen = [];
         foreach ($users as $user) {
-            $resolved = get_user_timezone($user->timezone);
+            // Pass the user record, not the raw field: core_date then maps the '99' (server default)
+            // sentinel to the server timezone and honours $CFG->forcetimezone, whereas
+            // get_user_timezone($user->timezone) would resolve '99' to the viewer's own timezone.
+            $resolved = core_date::get_user_timezone($user);
 
             if (is_numeric($resolved)) {
                 $key = 'offset:' . $resolved;
