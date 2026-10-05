@@ -14,9 +14,15 @@ labels:
   #   fully-free | freemium | paid-service | external-account
   #   donation-supported | commercial-support-available
   - fully-free
-# screenshots:
-#   - path: .camp/screenshots/overview.png
-#     caption: Main view
+screenshots:
+  - path: .camp/screenshots/01-colour-on.png
+    caption: Live clocks for each timezone, each row tinted by the local time of day
+  - path: .camp/screenshots/02-colour-off.png
+    caption: 'The same block with the colour background off: UTC offset, local date and a sun/moon waking-hours icon'
+  - path: .camp/screenshots/03-course-page.png
+    caption: The block on a course page
+  - path: .camp/screenshots/04-settings.png
+    caption: 'Block settings: timezones, sort order, UTC offset, 24-hour time, seconds, date, day/night icon and colour by time of day'
 # links:
 #   docs: https://…
 #   issues: https://…
