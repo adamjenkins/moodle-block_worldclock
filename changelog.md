@@ -2,6 +2,19 @@
 
 All notable changes to the World clock block are documented in this file.
 
+## [1.6.4] - 2026-11-10
+
+### Changed
+
+- `amd/src/clock.js` converted from a legacy `define()` AMD module to ES6
+  module syntax (`export const init`); `amd/build` rebuilt. Behaviour is
+  unchanged.
+
+### Added
+
+- Camp listing screenshots (`.camp/screenshots/01-04`) with captions in
+  `.camp/listing.yml`.
+
 ## [1.6.3] - 2026-10-04
 
 ### Fixed
